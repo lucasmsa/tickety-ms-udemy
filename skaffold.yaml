@@ -1,0 +1,17 @@
+apiVersion: skaffold/v4beta4
+kind: Config
+build:
+  artifacts:
+    - image: lucasmsa/tickety-auth
+      context: auth
+      sync:
+        manual:
+          - src: src/**/*.ts
+            dest: .
+      docker:
+        dockerfile: Dockerfile
+  local:
+    push: false
+manifests:
+  rawYaml:
+    - ./infra/k8s/*
