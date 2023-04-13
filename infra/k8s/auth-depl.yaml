@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
         - name: auth
-          image: lucasmsa/tickety-auth
+          # image: lucasmsa/tickety-auth
+          image: us.gcr.io/tickety-dev-383517/auth
           ports:
             - containerPort: 3000
 ---
