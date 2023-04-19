@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import { body, validationResult } from "express-validator";
 import { RequestValidationError } from "../errors/requestValidationError";
-import { DatabaseConnectionError } from "../errors/databaseConnectionError";
+import { User } from "../models/user";
 
 const router = Router();
 
@@ -23,13 +23,21 @@ router.post(
 
     const { email, password } = req.body;
 
-    console.log("Creating a homie...");
-    throw new DatabaseConnectionError();
+    const existingUser = await User.findOne({ email });
 
-    // return res.json({
-    //   email,
-    //   password: password.replaceAll(/./g, "*")
-    // });
+    if (existingUser) {
+      console.log("Email in use");
+      return res.send({});
+    }
+
+    const user = User.build({
+      email,
+      password
+    });
+
+    await user.save();
+
+    res.status(201).send(user);
   }
 );
 
