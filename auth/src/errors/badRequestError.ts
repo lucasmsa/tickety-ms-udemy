@@ -2,8 +2,19 @@ import { CustomError } from "./customError";
 import { CommonErrorStructure } from "./types/CommonErrorStructure";
 
 export class BadRequestError extends CustomError {
-  statusCode = 500;
+  statusCode = 400;
+
+  constructor(public message: string) {
+    super(message);
+
+    Object.setPrototypeOf(this, BadRequestError.prototype);
+  }
+
   serializeError(): CommonErrorStructure[] {
-    throw new Error("Method not implemented.");
+    return [
+      {
+        message: this.message
+      }
+    ];
   }
 }
