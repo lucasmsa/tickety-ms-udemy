@@ -7,6 +7,7 @@ import {
   signupRouter
 } from "./routes";
 import mongoose from "mongoose";
+import cookieSession from "cookie-session";
 import { errorHandler } from "./middlewares/errorHandler";
 import { NotFoundError } from "./errors/notFoundError";
 import { DatabaseConnectionError } from "./errors/databaseConnectionError";
@@ -14,7 +15,14 @@ import { DatabaseConnectionError } from "./errors/databaseConnectionError";
 const app = express();
 const PORT = 3000;
 
+app.set("trust proxy", true);
 app.use(express.json());
+app.use(
+  cookieSession({
+    signed: false,
+    secure: true
+  })
+);
 
 app.use(currentUserRouter);
 app.use(signinRouter);
