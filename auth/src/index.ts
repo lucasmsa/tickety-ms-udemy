@@ -1,4 +1,4 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import "express-async-errors";
 import {
   currentUserRouter,
@@ -41,11 +41,11 @@ app.get("/api/users/", (req, res) => {
   });
 });
 
-app.get("/api/users/currentuser", (req, res) => {
-  res.send("hey there");
-});
-
 const startup = async () => {
+  if (!process.env.JWT_KEY) {
+    throw new Error("JWT_KEY must be defined");
+  }
+
   try {
     await mongoose.connect("mongodb://auth-mongo-srv:27017/auth");
     console.log("🦾 Connected to MongoDB!");
